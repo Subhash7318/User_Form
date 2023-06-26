@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Userform</title>
+    <link rel="stylesheet" href="{% static 'userform/styles.css' %}">
+</head>
+<body>
+    <div class="navbar">
+        <h1 class="logo">User-Form</h1>
+    </div>
+    
+    <div class="userform">
+        <form method="post" name="userForm" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <label for="name"><b>Name :</b></label>
+            <input type="text" id="name" name="name" placeholder="please enter your name">
+            <br>
+            <label for="email"><b>Email-id :</b></label>
+            <input type="email" name="email" id="email" placeholder="enter your email id">
+            <br>
+            <label for="dob"><b>Date of birth :</b></label>
+            <input type="date" name="dob" id="dob">
+            <br>
+            <label for="phone"><b>Phone No. :</b></label>
+            <input type="number" name="phone" id="phone">
+            <br>
+            <button type="submit"><b>Submit</b></button>
+        </form>
+    </div>
+<script >
+    function validateForm() {
+    var name = document.forms["userForm"]["name"].value;
+    var email = document.forms["userForm"]["email"].value;
+    var dob = document.forms["userForm"]["dob"].value;
+
+    if (name == "") {
+      alert("Please enter your name.");
+      return false;
+    }
+
+    if (email == "") {
+      alert("Please enter your email address.");
+      return false;
+    }
+
+    if (dob == "") {
+      alert("Please enter your date of birth.");
+      return false;
+    }
+
+    // Calculate age based on the entered date of birth
+    var today = new Date();
+    var birthDate = new Date(dob);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+
+    if (age < 18) {
+      alert("You must be at least 18 years old.");
+      return false;
+    }
+
+    // Form is valid, continue with submission
+    return true;
+  }
+
+</script>
+</body>
+</html>
